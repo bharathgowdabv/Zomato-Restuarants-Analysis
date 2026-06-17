@@ -1,0 +1,45 @@
+USE master;
+
+CREATE DATABASE Zomato;
+
+Use Zomato;
+-------------------------------------------------------------------------------------------------------------------------
+TRUNCATE TABLE zomato_raw;
+
+BULK INSERT zomato_raw
+FROM 'E:\SQL projects\Zomato\Dataset\zomato.csv'
+WITH (
+    FORMAT       = 'CSV',        -- Handles quoted fields correctly
+    FIELDQUOTE   = '"',          -- Treats double-quoted fields as single value
+    FIRSTROW     = 2,            -- Skip header row
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR   = '\n',
+    CODEPAGE        = '65001',   -- UTF-8 encoding for Indian restaurant names
+    TABLOCK,
+    KEEPNULLS                    -- Keep blank fields as NULL, not empty string
+);
+-------------------------------------------------------------------------------------------------------------------------
+
+IF OBJECT_ID('zomato_raw','U') IS NOT NULL
+DROP TABLE zomato_raw;
+
+CREATE TABLE zomato_raw (
+  url              NVARCHAR(MAX),
+  address          NVARCHAR(MAX),
+  name             NVARCHAR(MAX),
+  online_order     NVARCHAR(MAX),
+  book_table       NVARCHAR(MAX),
+  rate             NVARCHAR(MAX),   
+  votes            NVARCHAR(MAX),   
+  phone            NVARCHAR(MAX),
+  location         NVARCHAR(MAX),
+  rest_type        NVARCHAR(MAX),
+  dish_liked       NVARCHAR(MAX),
+  cuisines         NVARCHAR(MAX),
+  approx_cost      NVARCHAR(MAX),   
+  reviews_list     NVARCHAR(MAX),
+  menu_item        NVARCHAR(MAX),
+  listed_type      NVARCHAR(MAX),
+  listed_city      NVARCHAR(MAX)
+);
+
